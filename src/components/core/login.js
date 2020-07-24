@@ -17,7 +17,6 @@ function Login(props) {
 
         call_AUTH(values)
             .then((response) => {
-                console.log(response);
                 window.localStorage.setItem('token', response.data.token);
                 props.history.push('/');
             })

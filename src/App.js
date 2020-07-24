@@ -16,17 +16,22 @@ function App() {
     useEffect(() => {
         let token = localStorage.getItem('token') ? localStorage.getItem('token') : false;
 
-        let data = window.atob(token.slice(token.indexOf(".") + 1, token.lastIndexOf(".")));
-        let id = data.slice(data.indexOf('Id":') + 4, data.indexOf(',"user'));
+        if(token) {
+            let data = window.atob(token.slice(token.indexOf(".") + 1, token.lastIndexOf(".")));
+            let id = data.slice(data.indexOf('Id":') + 4, data.indexOf(',"user'));
 
-        call_get(`${PLANTS}${id}`)
-            .then((response) => {
-                console.log(response);
-                setUserInfo({...userInfo, plants: response.data});
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            console.log(id);
+            console.log(`${PLANTS}${id}`);
+
+            call_get(`${PLANTS}${id}`)
+                .then((response) => {
+                    console.log(response);
+                    setUserInfo({...userInfo, id: parseInt(id), plants: response.data});
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }, []);
 
   return (
