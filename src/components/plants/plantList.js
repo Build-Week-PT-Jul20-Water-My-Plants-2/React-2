@@ -23,7 +23,7 @@ const PlantList = () => {
             <div>
                 {userInfo.plants.map((plant) => {
                     return (
-                        <PlantDetail plant={plant}/>
+                        <PlantDetail plant={plant} key={plant.id}/>
                     );
                 })}
             </div>
