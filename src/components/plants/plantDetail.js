@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import {call_delete, PLANTS} from "../../api/apiHelpers";
+import PlantInfo from "./plantInfo";
+import PlantForm from "./plantForm";
+import EditingContext from "../../contexts/editingContext";
 
 const PlantDetail = (props) => {
-    function handleClick(event) {
-        event.preventDefault();
+    const [editing, setEditing] = useState(false);
 
-        console.log(props.history);
+    function handleDelete(event) {
+        event.preventDefault();
 
         call_delete(`${PLANTS}${props.plant.id}`)
             .then((response) => {
@@ -16,17 +19,21 @@ const PlantDetail = (props) => {
             });
     }
 
-    return(
-        <div>
-            <img src='' alt={ props.plant.nickname }/>
-            <div>
-                <h2>{ props.plant.species }</h2>
-                <h3>Common Name: { props.plant.nickname }</h3>
-                <p>Watering Frequency: { props.plant.h2oFrequency }</p>
-            </div>
+    function handleEdit(event) {
+        event.preventDefault();
 
-            <div onClick={handleClick}>Delete Plant</div>
-        </div>
+        console.log(event);
+        setEditing(true);
+    }
+
+    return(
+        <EditingContext.Provider value={{editing, setEditing}}>
+            <div>
+                {editing ? <PlantForm plant={props.plant}/> : <PlantInfo plant={props.plant}/>}
+                {!editing ? <button type="button" onClick={handleEdit}>Edit Plant</button> : ''}
+                <button type="button" onClick={handleDelete}>Delete Plant</button>
+            </div>
+        </EditingContext.Provider>
     );
 }
 

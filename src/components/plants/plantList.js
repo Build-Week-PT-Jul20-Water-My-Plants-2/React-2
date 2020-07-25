@@ -2,7 +2,6 @@ import React, {useContext, useEffect} from "react";
 import PlantDetail from "./plantDetail";
 import PlantContext from "../../contexts/plantsContext";
 import {call_get, PLANTS} from "../../api/apiHelpers";
-import PlantForm from "./plantForm";
 
 const PlantList = () => {
     const {userInfo, setUserInfo} = useContext(PlantContext);
@@ -20,7 +19,6 @@ const PlantList = () => {
     if(userInfo.plants) {
         return(
             <div>
-                <PlantForm />
                 {userInfo.plants.map((plant) => {
                     return (
                         <PlantDetail plant={plant} key={plant.id}/>

@@ -1,10 +1,15 @@
 import { useState } from 'react';
 
-export const useForm = initialValue => {
+const initialValue = {
+    username: '',
+    password: '',
+};
+
+export const useForm = () => {
     const [values, setValues] = useState(initialValue);
 
-  const handleChanges = e => {
-      setValues({ ...values, [e.target.name]: e.target.value });
+  const handleChanges = (event) => {
+      setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   return [values, handleChanges];

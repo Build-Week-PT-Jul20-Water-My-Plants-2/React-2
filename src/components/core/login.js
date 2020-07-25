@@ -3,13 +3,8 @@ import { useForm } from "../../hooks/useForm";
 import {call_AUTH} from "../../api/apiHelpers";
 import PlantContext from "../../contexts/plantsContext";
 
-const initialValue = {
-    username: '',
-    password: '',
-};
-
 function Login(props) {
-    const [values, handleChanges] = useForm(initialValue);
+    const [values, handleChanges] = useForm();
     const {setUserInfo} = useContext(PlantContext);
 
     function handleSubmit(event) {

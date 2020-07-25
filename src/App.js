@@ -6,7 +6,8 @@ import PrivateRoute from "./components/routes/privateRoute";
 import MarketingPage from "./components/marketing/marketingPage";
 
 import PlantContext from "./contexts/plantsContext";
-import PlantList from "./components/plants/plantList";
+import PlantApp from "./components/plants/plantApp";
+
 import {call_get, PLANTS} from "./api/apiHelpers";
 
 
@@ -37,11 +38,11 @@ function App() {
   return (
       <Router>
           <PlantContext.Provider value={{userInfo, setUserInfo}}>
-          <div>
-              <Navigation/>
+              <div>
+                  <Navigation/>
 
-              {localStorage.getItem('token') ? <PrivateRoute component={PlantList}/> : <Route exact path="/" component={MarketingPage}/>}
-          </div>
+                  {localStorage.getItem('token') ? <PrivateRoute component={PlantApp}/> : <Route exact path="/" component={MarketingPage}/>}
+              </div>
           </PlantContext.Provider>
       </Router>
   );
