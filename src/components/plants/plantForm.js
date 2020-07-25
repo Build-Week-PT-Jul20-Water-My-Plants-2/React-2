@@ -1,36 +1,49 @@
-import React, {useContext, useEffect} from "react";
-import {call_post, PLANTS} from "../../api/apiHelpers";
+import React, {useContext} from "react";
+import {call_post, call_put, PLANTS} from "../../api/apiHelpers";
 import PlantContext from "../../contexts/plantsContext";
-import EditingContext from "../../contexts/editingContext";
 import {usePlantForm} from "../../hooks/usePlantForm";
 
 import "./sass/plantForm.scss"
 
 function PlantForm(props) {
-    const [plant, handleChanges] = usePlantForm(props.plant);
-
-    const {editing, setEditing} = useContext(EditingContext);
-    const {userInfo} = useContext(PlantContext);
+    const [plant, handleChanges, clearForm] = usePlantForm(props.plant);
+    const {userInfo, updatePlants} = useContext(PlantContext);
 
     function handleSubmit(event) {
         event.preventDefault();
 
-        let newPlant = {
+        let plantPayload = {
             nickname: plant.nickname,
             species: plant.species,
             h2oFrequency: plant.h2oFrequency,
             user_id: userInfo.id,
         };
 
-        call_post(PLANTS, newPlant)
-            .then((response) => {
-                console.log(response);
-                if (editing) {setEditing(false)}
-                props.history.push('/');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if(props.editing) {
+            call_put(`${PLANTS}${props.plant.id}`, plantPayload)
+                .then((response) => {
+                    console.log(response);
+                    updatePlants();
+                    clearForm();
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    props.setEditing(false);
+                });
+        } else {
+
+            call_post(PLANTS, plantPayload)
+                .then((response) => {
+                    console.log(response);
+                    updatePlants();
+                    clearForm();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }
 
     return (
@@ -45,7 +58,7 @@ function PlantForm(props) {
                 <label>Watering Frequency:
                     <input name="h2oFrequency" placeholder="Watering Frequency" value={plant.h2oFrequency} type="text" onChange={handleChanges}/>
                 </label>
-                <button type="submit">{editing ? "Save" : "Add"}</button>
+                <button type="submit">Save Plant</button>
             </form>
         </div>
     );

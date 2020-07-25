@@ -35,9 +35,20 @@ function App() {
         }
     }, []);
 
+    function updatePlants() {
+        call_get(`${PLANTS}${userInfo.id}`)
+            .then((response) => {
+                console.log("update plants", response);
+                setUserInfo({...userInfo, plants: response.data});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
   return (
       <Router>
-          <PlantContext.Provider value={{userInfo, setUserInfo}}>
+          <PlantContext.Provider value={{userInfo, setUserInfo, updatePlants}}>
               <div>
                   <Navigation/>
 

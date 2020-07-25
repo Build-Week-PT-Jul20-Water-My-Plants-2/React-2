@@ -13,5 +13,10 @@ export const usePlantForm = (plant = initialPlant) => {
         setValues({ ...values, [event.target.name]: event.target.value });
     };
 
-    return [values, handleChanges];
+    const clearForm = () => {
+        setValues(initialPlant);
+    }
+
+
+    return [values, handleChanges, clearForm];
 };
