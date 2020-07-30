@@ -44,19 +44,9 @@ function UserApp() {
             });
     }
 
-    const addUser = (payload) => {
-        call_register(payload)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
-
     return(
         <div>
-            <UserContext.Provider value={{user, updateUser, addUser}}>
+            <UserContext.Provider value={{user, updateUser}}>
                 {user.id ? <Profile /> : <p>Loading . . .</p>}
             </UserContext.Provider>
         </div>

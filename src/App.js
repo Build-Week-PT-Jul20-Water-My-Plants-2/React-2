@@ -30,8 +30,8 @@ function App() {
         <Router>
             <AuthContext.Provider value={{auth, setAuth}}>
                 <Link to="/">Home</Link>
-                <Link to="/plants">Plants</Link>
-                <Link to="/profile">Profile</Link>
+                {isAuthenticated() ? <Link to="/plants">Plants</Link> : ''}
+                {isAuthenticated() ? <Link to="/profile">Profile</Link> : ''}
                 {!isAuthenticated() ? <Link to="/login">Login</Link> : ''}
                 {!isAuthenticated() ? <Link to="/Register">Register</Link> : ''}
 

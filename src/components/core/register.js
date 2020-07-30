@@ -1,8 +1,7 @@
-import React, {useContext} from "react";
-import UserContext from "../../contexts/userContext";
+import React from "react";
+import {call_register} from "../../api/apiHelpers";
 
 function Register() {
-    const {addUser} = useContext(UserContext);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -12,7 +11,14 @@ function Register() {
             password: event.target.password.value,
         };
 
-        addUser(newUser);
+        call_register(newUser)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
     }
 
     return(
