@@ -1,9 +1,8 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import Profile from "./profile";
 
 import UserContext from "../../contexts/userContext";
-import AuthContext from "../../contexts/authContext";
 
 import {call_get, call_put, call_register, USERS} from "../../api/apiHelpers";
 
@@ -11,30 +10,34 @@ import {getToken, getUserIdFromToken} from "../../utilites/services";
 
 
 function UserApp() {
-    const {auth} = useContext(AuthContext);
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        let id = getUserIdFromToken(getToken());
+        if(!user.id) {
+            let id = getUserIdFromToken(getToken());
 
-        call_get(`${USERS}`)
-            .then((response) => {
-                response.data.map((userFromDB) => {
-                    if(parseInt(id) === userFromDB.id) {
-                        setUser(userFromDB);
-                    }
+            call_get(`${USERS}`)
+                .then((response) => {
+                    console.log(response);
+                    response.data.map((userFromDB) => {
+                        console.log(userFromDB.id, id, parseInt(id) === userFromDB.id)
+                        if(parseInt(id) === userFromDB.id) {
+                            console.log("Setting user state", userFromDB)
+                            setUser(userFromDB);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
                 });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
+        }
     },[])
 
     const updateUser = (payload, userID) => {
         call_put(`${USERS}${userID}`, payload)
             .then((response) => {
                 console.log(response);
+                window.location.reload();
             })
             .catch((error) => {
                 console.log(error);
@@ -54,7 +57,7 @@ function UserApp() {
     return(
         <div>
             <UserContext.Provider value={{user, updateUser, addUser}}>
-                <Profile />
+                {user.id ? <Profile /> : <p>Loading . . .</p>}
             </UserContext.Provider>
         </div>
     );

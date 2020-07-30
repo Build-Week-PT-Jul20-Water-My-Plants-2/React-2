@@ -13,9 +13,9 @@ function UserEdit() {
         event.preventDefault();
 
         let updateUserPayload = {
-            username: '',
-            password: '',
-            phoneNumber: '',
+            username: userForm.username,
+            password: userForm.password,
+            phoneNumber: userForm.phoneNumber,
         };
 
         updateUser(updateUserPayload, user.id);
@@ -44,7 +44,7 @@ function UserEdit() {
                     Password:
                     <input type="text" name="password" placeholder="Password" value={userForm.password} onChange={handleChanges}/>
                 </label>
-                <button type="submit">Save</button>
+                <button type="submit">Save</button><button type="button" onClick={handleCancel}>Cancel</button>
             </form>
         </div>
     );

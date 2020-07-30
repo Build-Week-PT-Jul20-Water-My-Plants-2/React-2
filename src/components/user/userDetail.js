@@ -14,6 +14,7 @@ function UserDetail() {
 
     return(
         <div>
+            {console.log(user)}
             <h3>Username: {user.username}</h3>
             <p>Phone Number: {user.phoneNumber}</p>
             <button type="button" onClick={handleClick} >Edit</button>
