@@ -29,7 +29,7 @@ function Login(props) {
         <div>
             <form onSubmit={handleSubmit}>
                 <label><input name="username" value={values.username} placeholder="Username" type="text" onChange={handleChanges}/></label>
-                <label><input name="password" value={values.password} placeholder="Password" type="text" onChange={handleChanges}/></label>
+                <label><input name="password" value={values.password} placeholder="Password" type="password" onChange={handleChanges}/></label>
                 <button type="submit">Submit</button>
             </form>
         </div>

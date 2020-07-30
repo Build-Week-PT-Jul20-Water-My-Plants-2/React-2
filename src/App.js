@@ -16,8 +16,9 @@ import {getToken, getUserIdFromToken, isAuthenticated} from "./utilites/services
 
 
 function App() {
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useState({authenticated: false, id: ''});
 
+    //not working
     useEffect(() => {
         if(isAuthenticated()) {
             let id = getUserIdFromToken(getToken());

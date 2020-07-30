@@ -33,7 +33,6 @@ export function call_get(endpoint) {
     return axiosWithAuth()
         .get(`${BASE_URL}${endpoint}`)
         .then((response) => {
-            console.log(endpoint);
             return response;
         })
         .catch((error) => {

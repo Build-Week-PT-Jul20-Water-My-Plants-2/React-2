@@ -1,16 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Switch, Route, Link} from 'react-router-dom';
 
 import Profile from "./profile";
-import Register from "../core/register";
-
-import PrivateRoute from "../routes/privateRoute";
 
 import UserContext from "../../contexts/userContext";
 import AuthContext from "../../contexts/authContext";
 
 import {call_get, call_put, call_register, USERS} from "../../api/apiHelpers";
-import Login from "../core/login";
+
+import {getToken, getUserIdFromToken} from "../../utilites/services";
 
 
 function UserApp() {
@@ -18,13 +15,13 @@ function UserApp() {
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        console.log(auth);
+        let id = getUserIdFromToken(getToken());
 
         call_get(`${USERS}`)
             .then((response) => {
-                response.data.map((user) => {
-                    if(auth.id === user.id) {
-                        setUser(user);
+                response.data.map((userFromDB) => {
+                    if(parseInt(id) === userFromDB.id) {
+                        setUser(userFromDB);
                     }
                 });
             })
@@ -34,8 +31,8 @@ function UserApp() {
 
     },[])
 
-    const updateUser = (info) => {
-        call_put(`${USERS}${info.id}`, info)
+    const updateUser = (payload, userID) => {
+        call_put(`${USERS}${userID}`, payload)
             .then((response) => {
                 console.log(response);
             })
@@ -44,8 +41,8 @@ function UserApp() {
             });
     }
 
-    const addUser = (info) => {
-        call_register(info)
+    const addUser = (payload) => {
+        call_register(payload)
             .then((response) => {
                 console.log(response);
             })

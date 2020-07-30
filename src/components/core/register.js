@@ -25,7 +25,7 @@ function Register() {
                     <input type="text" name="phoneNumber" placeholder="Phone Number"/>
                 </label>
                 <label>
-                    <input type="password" name="password" placeholder="Password"/>
+                    <input type="text" name="password" placeholder="Password"/>
                 </label>
                 <button type="submit">Register</button>
             </form>

@@ -63,7 +63,7 @@ function PlantForm(props) {
                 <label>Watering Frequency:
                     <input name="h2oFrequency" placeholder="Watering Frequency" value={plant.h2oFrequency} type="text" onChange={handleChanges}/>
                 </label>
-                <button type="submit">Save Plant</button>
+                <button type="submit">Save Plant</button><button type="button" onClick={clearForm}>Cancel</button>
             </form>
         </div>
     );

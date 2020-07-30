@@ -1,25 +1,20 @@
-import React, {useContext} from "react";
-import UserContext from "../../contexts/userContext";
+import React, {useState} from "react";
+import UserDetail from "./userDetail";
+import UserEdit from "./userEdit";
+import EditingContext from "../../contexts/editingContext";
 
 function Profile() {
-    const {user} = useContext(UserContext);
+    const [editing, setEditing] = useState(false);
 
-    console.log(user);
-
-    if(user) {
-        return(
-            <div>
-                <h3>Username: {user.username}</h3>
-                <p>Phone Number: {user.phoneNumber}</p>
-            </div>
-        );
-    } else {
-        return(
-            <div>
-                Loading ...
-            </div>
-        );
+    function toggleEditing() {
+        setEditing(!editing);
     }
+
+    return(
+        <EditingContext.Provider value={{toggleEditing}}>
+            { !editing ? <UserDetail /> : <UserEdit /> }
+        </EditingContext.Provider>
+    );
 }
 
 export default Profile;
