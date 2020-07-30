@@ -1,5 +1,5 @@
-import React from 'react';
+import React, { createContext } from 'react';
 
-const EditingContext = React.createContext();
+const EditingContext = createContext();
 
 export default EditingContext;

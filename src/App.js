@@ -1,62 +1,49 @@
 import React, {useEffect, useState} from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 
-import Navigation from "./components/core/navigation";
 import PrivateRoute from "./components/routes/privateRoute";
-import MarketingPage from "./components/marketing/marketingPage";
+import PublicRoute from "./components/routes/publicRoute";
 
-import PlantContext from "./contexts/plantsContext";
 import PlantApp from "./components/plants/plantApp";
+import UserApp from "./components/user/userApp";
+import Login from "./components/core/login";
+import Register from "./components/core/register";
 
-import {call_get, PLANTS} from "./api/apiHelpers";
+import AuthContext from "./contexts/authContext";
+
+import {getToken, getUserIdFromToken, isAuthenticated} from "./utilites/services";
+
 
 
 function App() {
-    const [userInfo, setUserInfo] = useState({});
+    const [auth, setAuth] = useState({});
 
     useEffect(() => {
-        let token = localStorage.getItem('token') ? localStorage.getItem('token') : false;
-
-        if(token) {
-            let data = window.atob(token.slice(token.indexOf(".") + 1, token.lastIndexOf(".")));
-            let id = data.slice(data.indexOf('Id":') + 4, data.indexOf(',"user'));
-
-            console.log(id);
-            console.log(`${PLANTS}${id}`);
-
-            call_get(`${PLANTS}${id}`)
-                .then((response) => {
-                    console.log(response);
-                    setUserInfo({...userInfo, id: parseInt(id), plants: response.data});
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+        if(isAuthenticated()) {
+            let id = getUserIdFromToken(getToken());
+            setAuth({authenticated: true, id: id});
         }
     }, []);
 
-    function updatePlants() {
-        call_get(`${PLANTS}${userInfo.id}`)
-            .then((response) => {
-                console.log("update plants", response);
-                setUserInfo({...userInfo, plants: response.data});
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+    return (
+        <Router>
+            <AuthContext.Provider value={{auth, setAuth}}>
+                <Link to="/">Home</Link>
+                <Link to="/plants">Plants</Link>
+                <Link to="/profile">Profile</Link>
+                {!isAuthenticated() ? <Link to="/login">Login</Link> : ''}
+                {!isAuthenticated() ? <Link to="/Register">Register</Link> : ''}
 
-  return (
-      <Router>
-          <PlantContext.Provider value={{userInfo, setUserInfo, updatePlants}}>
-              <div>
-                  <Navigation/>
+                <Switch>
+                    <PublicRoute restricted={true} path="/login" component={Login} />
+                    <PublicRoute restricted={true} path="/register" component={Register} />
 
-                  {localStorage.getItem('token') ? <PrivateRoute component={PlantApp}/> : <Route exact path="/" component={MarketingPage}/>}
-              </div>
-          </PlantContext.Provider>
-      </Router>
-  );
+                    <PrivateRoute path="/plants" component={PlantApp}/>
+                    <PrivateRoute path="/profile" component={UserApp} />
+                </Switch>
+            </AuthContext.Provider>
+        </Router>
+    );
 }
 
 export default App;

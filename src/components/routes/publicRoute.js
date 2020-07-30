@@ -3,15 +3,15 @@ import { Route, Redirect } from "react-router-dom";
 
 import {isAuthenticated} from "../../utilites/services";
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PublicRoute = ({ component: Component, restricted, ...rest }) => (
     <Route
         {...rest}
         render={
             (props) => {
-                return (isAuthenticated() ? <Component {...props} /> : <Redirect to="/login" />);
+                return (isAuthenticated() && restricted ? <Component {...props} /> : <Redirect to="/plants" />);
             }
         }
     />
 );
 
-export default PrivateRoute;
+export default PublicRoute;

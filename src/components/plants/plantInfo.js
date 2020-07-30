@@ -4,7 +4,7 @@ function PlantInfo(props) {
 
     return (
         <div>
-            <img src='' alt={ props.plant.nickname }/>
+            {/*<img src='' alt={ props.plant.nickname }/>*/}
             <div>
                 <h2>{ props.plant.species }</h2>
                 <h3>Common Name: { props.plant.nickname }</h3>

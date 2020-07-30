@@ -1,5 +1,5 @@
-import React from 'react';
+import React, { createContext } from 'react';
 
-const PlantContext = React.createContext();
+const PlantContext = createContext();
 
 export default PlantContext;

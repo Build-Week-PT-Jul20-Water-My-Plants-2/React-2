@@ -1,13 +1,18 @@
 import React, {useContext} from "react";
 import {call_post, call_put, PLANTS} from "../../api/apiHelpers";
 import PlantContext from "../../contexts/plantsContext";
-import {usePlantForm} from "../../hooks/usePlantForm";
+import AuthContext from "../../contexts/authContext";
+
+import {useForm} from "../../hooks/useForm";
+import {initialPlant} from "../../utilites/services";
 
 import "./sass/plantForm.scss"
 
+
 function PlantForm(props) {
-    const [plant, handleChanges, clearForm] = usePlantForm(props.plant);
-    const {userInfo, updatePlants} = useContext(PlantContext);
+    const [plant, handleChanges, clearForm] = useForm(initialPlant, props.plant);
+    const {auth} = useContext(AuthContext);
+    const {updatePlants} = useContext(PlantContext);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -16,7 +21,7 @@ function PlantForm(props) {
             nickname: plant.nickname,
             species: plant.species,
             h2oFrequency: plant.h2oFrequency,
-            user_id: userInfo.id,
+            user_id: auth.id,
         };
 
         if(props.editing) {

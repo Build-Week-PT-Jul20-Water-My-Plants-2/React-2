@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {axiosWithAuth} from "./axiosAuth";
 
-const BASE_URL = "https://cors-anywhere.herokuapp.com/https://watermyplants1.herokuapp.com/api/auth/"
+const BASE_URL = "https://watermyplants1.herokuapp.com/api/auth/"
 
 export const LOGIN = "login/";
 export const PLANTS = "plants/";
@@ -19,10 +19,21 @@ export function call_AUTH(payload) {
         });
 }
 
+export function call_register(payload) {
+    return axios.post(`${BASE_URL}${REGISTER}`, payload)
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            return error;
+        });
+}
+
 export function call_get(endpoint) {
     return axiosWithAuth()
         .get(`${BASE_URL}${endpoint}`)
         .then((response) => {
+            console.log(endpoint);
             return response;
         })
         .catch((error) => {
