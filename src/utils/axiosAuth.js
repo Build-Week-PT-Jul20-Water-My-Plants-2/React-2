@@ -9,6 +9,6 @@ export const axiosWithAuth = () => {
       'Content-Type': 'application/json'
     },
     baseURL:
-      'https://cors-anywhere.herokuapp.com/https://watermyplants1.herokuapp.com/api/auth'
+      'https://watermyplants1.herokuapp.com/api/auth'
   });
 };
